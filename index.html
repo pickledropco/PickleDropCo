@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PickleDrop | We Drop Courts. You Drop In.</title>
+  <meta name="description" content="PickleDrop delivers professional portable pickleball courts to your venue in Austin, Texas. We handle delivery, setup, and teardown. You do nothing." />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================
+       RESET & BASE
+    ======================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #111111;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ========================================
+       CSS VARIABLES
+    ======================================== */
+    :root {
+      --lime: #A4C424;
+      --lime-dark: #8aaa18;
+      --lime-glow: rgba(164, 196, 36, 0.15);
+      --black: #111111;
+      --dark: #1A1A1A;
+      --darker: #141414;
+      --white: #ffffff;
+      --gray: #888888;
+      --light-gray: #cccccc;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-lime: rgba(164, 196, 36, 0.25);
+    }
+
+    /* ========================================
+       NAV
+    ======================================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      background: rgba(17, 17, 17, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .nav-logo img {
+      height: 58px;
+      width: auto;
+      background: #ffffff;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--lime) !important;
+      color: #111111 !important;
+      padding: 0.55rem 1.3rem !important;
+      border-radius: 4px;
+      font-weight: 800 !important;
+    }
+    .nav-cta:hover { background: var(--lime-dark) !important; color: #111111 !important; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ========================================
+       HERO
+    ======================================== */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+
+    /* ─── Hero background (CSS atmospheric) ───
+       To swap in a Higgsfield image:
+       1. Save the image as hero.jpg next to index.html
+       2. Replace .hero-bg styles with:
+          .hero-bg { background: url('hero.jpg') center/cover no-repeat; }
+          .hero-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.55); }
+       3. Add <div class="hero-overlay"></div> inside #hero
+    ─────────────────────────────────────────── */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 70% at 65% 35%, rgba(164, 196, 36, 0.16) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 75% at 15% 85%, rgba(164, 196, 36, 0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 85% 70%, rgba(100, 140, 10, 0.06) 0%, transparent 60%),
+        linear-gradient(165deg, #0c0c0c 0%, #111111 35%, #131a04 70%, #111111 100%);
+    }
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(164, 196, 36, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(164, 196, 36, 0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 920px;
+      padding: 3rem 5%;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(164, 196, 36, 0.1);
+      border: 1px solid rgba(164, 196, 36, 0.28);
+      border-radius: 100px;
+      padding: 0.38rem 1.1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 1.75rem;
+    }
+    .hero-pill::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--lime);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 11vw, 9rem);
+      line-height: 0.92;
+      letter-spacing: 0.015em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-headline .accent { color: var(--lime); }
+    .hero-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.65);
+      max-width: 600px;
+      margin: 0 auto 2.75rem;
+      line-height: 1.75;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--lime);
+      color: #111111;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 1rem 2.4rem;
+      border-radius: 4px;
+      border: 2px solid var(--lime);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--lime-dark);
+      border-color: var(--lime-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(164, 196, 36, 0.3);
+    }
+    .btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 1rem 2.4rem;
+      border-radius: 4px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: rgba(255, 255, 255, 0.7); transform: translateY(-2px); }
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.3);
+      animation: float-scroll 2.2s ease-in-out infinite;
+    }
+    .hero-scroll-indicator span {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+    }
+    @keyframes float-scroll {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* ========================================
+       TRUST BAR
+    ======================================== */
+    .trust-bar {
+      background: var(--lime);
+      overflow: hidden;
+      padding: 0;
+    }
+    .trust-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .trust-track:hover { animation-play-state: paused; }
+    .trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #111111;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .trust-sep {
+      width: 4px;
+      height: 4px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ========================================
+       SECTION SHARED
+    ======================================== */
+    section { padding: 7rem 5%; }
+    .section-eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 0.9rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+    .section-body {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+
+    /* ========================================
+       HOW IT WORKS
+    ======================================== */
+    #how { background: var(--dark); }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+    .step-card {
+      position: relative;
+      padding: 2.5rem 2rem 2rem;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s;
+    }
+    .step-card:hover {
+      border-color: var(--border-lime);
+      transform: translateY(-5px);
+    }
+    .step-bg-num {
+      position: absolute;
+      top: -0.5rem;
+      right: 1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 7rem;
+      line-height: 1;
+      color: rgba(164, 196, 36, 0.07);
+      pointer-events: none;
+      user-select: none;
+    }
+    .step-icon-wrap {
+      width: 52px;
+      height: 52px;
+      background: rgba(164, 196, 36, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .step-icon-wrap svg { width: 26px; height: 26px; stroke: var(--lime); }
+    .step-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.7rem;
+    }
+    .step-card p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.75;
+    }
+
+    /* ========================================
+       WHO IT'S FOR
+    ======================================== */
+    #who { background: var(--black); }
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+    .who-card {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--dark);
+      transition: border-color 0.35s, transform 0.35s;
+    }
+    .who-card:hover {
+      border-color: var(--border-lime);
+      transform: translateY(-6px);
+    }
+
+    /* ─── Who card images ───
+       To swap in Higgsfield images for each card:
+       brewery:   <img src="brewery.jpg" alt="..." />
+       apartment: <img src="apartment.jpg" alt="..." />
+       corporate: <img src="corporate.jpg" alt="..." />
+       private:   <img src="private.jpg" alt="..." />
+       Place the <img> inside .who-card-visual and remove .card-placeholder
+    ─────────────────────────────────────────── */
+    .who-card-visual {
+      height: 210px;
+      overflow: hidden;
+      position: relative;
+    }
+    .who-card-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-brewery .card-placeholder {
+      background: linear-gradient(145deg, #1e1200 0%, #2d1c00 45%, #1a1000 100%);
+    }
+    .card-apartment .card-placeholder {
+      background: linear-gradient(145deg, #091422 0%, #0d1f34 45%, #061019 100%);
+    }
+    .card-corporate .card-placeholder {
+      background: linear-gradient(145deg, #091409 0%, #0e2010 45%, #060d06 100%);
+    }
+    .card-private .card-placeholder {
+      background: linear-gradient(145deg, #150915 0%, #220e22 45%, #0e060e 100%);
+    }
+    .card-icon-circle {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: rgba(164, 196, 36, 0.12);
+      border: 1px solid rgba(164, 196, 36, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon-circle svg { width: 36px; height: 36px; stroke: var(--lime); }
+    .who-card-body { padding: 1.75rem; }
+    .who-card-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 0.45rem;
+    }
+    .who-card-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.45rem;
+      line-height: 1.3;
+    }
+    .who-card-hook {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(164, 196, 36, 0.85);
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+    .who-card-desc {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.48);
+      line-height: 1.7;
+    }
+
+    /* ========================================
+       REQUIREMENTS
+    ======================================== */
+    #requirements { background: var(--darker); }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 3.5rem;
+    }
+    .spec-card {
+      padding: 1.75rem;
+      background: rgba(255, 255, 255, 0.028);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+    .spec-card:hover { border-color: var(--border-lime); }
+    .spec-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 0.4rem;
+    }
+    .spec-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.1rem;
+      line-height: 1.05;
+      color: var(--lime);
+      margin-bottom: 0.3rem;
+    }
+    .spec-desc {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.5;
+    }
+    .spec-notice {
+      margin-top: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(164, 196, 36, 0.05);
+      border: 1px solid rgba(164, 196, 36, 0.18);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.7;
+    }
+    .spec-notice a {
+      color: var(--lime);
+      font-weight: 600;
+      margin-left: 0.35rem;
+      transition: opacity 0.2s;
+    }
+    .spec-notice a:hover { opacity: 0.75; }
+
+    /* ========================================
+       PRICING
+    ======================================== */
+    #pricing {
+      background: var(--black);
+      text-align: center;
+    }
+    #pricing .section-body { margin: 0 auto 3rem; }
+    .factor-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.65rem;
+      margin-bottom: 3rem;
+    }
+    .chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.48rem 1.2rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .chip:hover { border-color: var(--border-lime); color: var(--white); }
+    .founding-note {
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.38);
+      line-height: 1.6;
+    }
+    .founding-note strong { color: rgba(164, 196, 36, 0.75); }
+
+    /* ========================================
+       FAQ
+    ======================================== */
+    #faq { background: var(--dark); }
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 3.5rem;
+    }
+    .faq-logo-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .faq-logo-wrap {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    .faq-logo-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+    .faq-list {
+      max-width: 100%;
+    }
+    @media (max-width: 900px) {
+      .faq-layout { grid-template-columns: 1fr; }
+      .faq-logo-col { display: none; }
+    }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      padding: 1.35rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      transition: color 0.2s;
+    }
+    .faq-btn:hover { color: var(--lime); }
+    .faq-plus {
+      width: 26px;
+      height: 26px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: border-color 0.25s, transform 0.35s;
+      color: rgba(255,255,255,0.5);
+    }
+    .faq-item.active .faq-plus {
+      border-color: var(--lime);
+      color: var(--lime);
+      transform: rotate(45deg);
+    }
+    .faq-item.active .faq-btn { color: var(--lime); }
+    .faq-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.42s ease, padding 0.3s;
+      font-size: 0.93rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.8;
+    }
+    .faq-item.active .faq-body {
+      max-height: 280px;
+      padding-bottom: 1.5rem;
+    }
+
+    /* ========================================
+       CONTACT / FORM
+    ======================================== */
+    #contact { background: var(--black); }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.65fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 3.5rem;
+    }
+    .contact-perks {
+      margin-top: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .perk {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .perk svg { stroke: var(--lime); flex-shrink: 0; }
+    .form-wrap { position: relative; }
+    .form-success-msg {
+      display: none;
+      padding: 3.5rem 2.5rem;
+      background: rgba(164, 196, 36, 0.06);
+      border: 1px solid rgba(164, 196, 36, 0.2);
+      border-radius: 10px;
+      text-align: center;
+    }
+    .form-success-msg.visible { display: block; }
+    .form-success-msg h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--lime);
+      margin-bottom: 1rem;
+    }
+    .form-success-msg p { color: rgba(255,255,255,0.55); line-height: 1.7; }
+    /* IMPORTANT: Replace FORM_ID in the form action with your Formspree form ID */
+    form#inquiry {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .f-full { grid-column: 1 / -1; }
+    .f-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .f-group label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.38);
+    }
+    .f-group input,
+    .f-group select,
+    .f-group textarea {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 0.82rem 1rem;
+      font-size: 0.93rem;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+    .f-group input::placeholder,
+    .f-group textarea::placeholder { color: rgba(255,255,255,0.22); }
+    .f-group input:focus,
+    .f-group select:focus,
+    .f-group textarea:focus {
+      border-color: var(--lime);
+      background: rgba(164, 196, 36, 0.045);
+    }
+    .f-group select { cursor: pointer; color: rgba(255,255,255,0.7); }
+    .f-group select option { background: #1a1a1a; color: var(--white); }
+    .f-group textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+    .f-submit { margin-top: 0.25rem; }
+    .btn-submit {
+      width: 100%;
+      background: var(--lime);
+      color: #111111;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 1.1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-submit:hover {
+      background: var(--lime-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(164,196,36,0.3);
+    }
+    .f-note {
+      margin-top: 0.9rem;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.28);
+      line-height: 1.65;
+    }
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+    footer {
+      background: #0d0d0d;
+      border-top: 1px solid var(--border);
+      padding: 4.5rem 5% 2.5rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-brand img {
+      height: 64px;
+      width: auto;
+      margin-bottom: 0.9rem;
+      background: #ffffff;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .footer-tagline {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 1.5rem;
+    }
+    .social-row { display: flex; gap: 0.85rem; }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.5);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-btn svg { width: 22px; height: 22px; }
+    .social-btn:hover { border-color: var(--lime); color: var(--lime); }
+    .footer-col h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 1.1rem;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .footer-col ul li a {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--lime); }
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy { font-size: 0.85rem; color: rgba(255,255,255,0.2); }
+    .footer-city { font-size: 0.85rem; color: rgba(255,255,255,0.2); }
+
+    /* ========================================
+       SCROLL ANIMATIONS
+    ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    /* ========================================
+       RESPONSIVE
+    ======================================== */
+    @media (max-width: 1024px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .who-grid { grid-template-columns: 1fr; }
+      .spec-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #111111;
+        padding: 1.5rem 5%;
+        border-bottom: 1px solid var(--border);
+        gap: 1.1rem;
+        z-index: 999;
+      }
+      .hamburger { display: flex; }
+      section { padding: 5rem 5%; }
+      form#inquiry { grid-template-columns: 1fr; }
+      .f-full { grid-column: 1; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .spec-grid { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+    }
+
+    /* ========================================
+       DESIGN UPGRADE — UI/UX PRO MAX
+       Spring easing, ambient blobs, glow system,
+       staggered reveals, premium interactions
+    ======================================== */
+
+    /* -- Easing tokens (expo-out = natural, spring-like) -- */
+    :root {
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+      --ease-in: cubic-bezier(0.4, 0.0, 1, 1);
+      --glow-lime: 0 0 32px rgba(164, 196, 36, 0.28);
+      --glow-lime-strong: 0 0 48px rgba(164, 196, 36, 0.45);
+      --shadow-card: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    /* -- Ambient blobs in hero -- */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: blob-drift var(--drift, 18s) ease-in-out infinite alternate;
+    }
+    .hero-blob-1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(164,196,36,0.14) 0%, transparent 70%);
+      top: -80px; right: 5%;
+      --drift: 20s;
+    }
+    .hero-blob-2 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(100,140,10,0.09) 0%, transparent 70%);
+      bottom: 10%; left: -5%;
+      --drift: 26s;
+      animation-delay: -8s;
+    }
+    .hero-blob-3 {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(164,196,36,0.07) 0%, transparent 70%);
+      top: 40%; left: 45%;
+      --drift: 15s;
+      animation-delay: -4s;
+    }
+    @keyframes blob-drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      33%  { transform: translate(40px, -30px) scale(1.05); }
+      66%  { transform: translate(-20px, 20px) scale(0.96); }
+      100% { transform: translate(30px, 10px) scale(1.03); }
+    }
+
+    /* -- Hero headline glow on accent -- */
+    .hero-headline .accent {
+      color: var(--lime);
+      text-shadow: 0 0 60px rgba(164,196,36,0.35), 0 0 120px rgba(164,196,36,0.15);
+    }
+
+    /* -- Upgraded pill animation -- */
+    .hero-pill {
+      animation: pill-breathe 3s ease-in-out infinite;
+    }
+    @keyframes pill-breathe {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(164,196,36,0); border-color: rgba(164,196,36,0.28); }
+      50% { box-shadow: 0 0 16px rgba(164,196,36,0.18); border-color: rgba(164,196,36,0.55); }
+    }
+
+    /* -- Nav link slide-underline -- */
+    .nav-links a:not(.nav-cta) {
+      position: relative;
+    }
+    .nav-links a:not(.nav-cta)::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: var(--lime);
+      transition: width 0.25s var(--ease-spring);
+    }
+    .nav-links a:not(.nav-cta):hover::after { width: 100%; }
+    .nav-links a { cursor: pointer; }
+
+    /* -- Upgraded primary button -- */
+    .btn-primary {
+      transition: background 0.2s, border-color 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.25s var(--ease-spring) !important;
+    }
+    .btn-primary:hover {
+      background: var(--lime-dark) !important;
+      border-color: var(--lime-dark) !important;
+      transform: translateY(-3px) scale(1.02) !important;
+      box-shadow: var(--glow-lime), 0 12px 32px rgba(0,0,0,0.35) !important;
+    }
+    .btn-primary:active {
+      transform: translateY(0) scale(0.97) !important;
+      box-shadow: none !important;
+      transition-duration: 0.08s !important;
+    }
+
+    /* -- Upgraded ghost button -- */
+    .btn-ghost {
+      transition: border-color 0.2s, color 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.25s var(--ease-spring) !important;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.8) !important;
+      transform: translateY(-3px) !important;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3) !important;
+    }
+    .btn-ghost:active { transform: scale(0.97) !important; transition-duration: 0.08s !important; }
+
+    /* -- Nav CTA glow -- */
+    .nav-cta {
+      transition: background 0.2s, box-shadow 0.2s var(--ease-spring), transform 0.15s var(--ease-spring) !important;
+    }
+    .nav-cta:hover {
+      box-shadow: 0 0 20px rgba(164,196,36,0.4) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* -- Section eyebrow with lime rule -- */
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px; height: 2px;
+      background: var(--lime);
+      flex-shrink: 0;
+    }
+
+    /* -- Step card premium upgrade -- */
+    .step-card {
+      transition: border-color 0.3s var(--ease-spring), transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring) !important;
+      cursor: default;
+    }
+    .step-card:hover {
+      border-color: rgba(164,196,36,0.4) !important;
+      transform: translateY(-8px) scale(1.01) !important;
+      box-shadow: var(--shadow-card), 0 0 40px rgba(164,196,36,0.06) !important;
+    }
+
+    /* -- Who card premium upgrade -- */
+    .who-card {
+      transition: border-color 0.3s var(--ease-spring), transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring) !important;
+    }
+    .who-card:hover {
+      border-color: rgba(164,196,36,0.4) !important;
+      transform: translateY(-8px) !important;
+      box-shadow: var(--shadow-card), 0 0 48px rgba(164,196,36,0.07) !important;
+    }
+    /* Lime left-border accent on who-card hover */
+    .who-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 20%; bottom: 20%;
+      width: 2px;
+      background: var(--lime);
+      border-radius: 0 2px 2px 0;
+      opacity: 0;
+      transform: scaleY(0.4);
+      transition: opacity 0.3s var(--ease-spring), transform 0.35s var(--ease-spring);
+    }
+    .who-card { position: relative; }
+    .who-card:hover::before { opacity: 1; transform: scaleY(1); }
+
+    /* -- Card visual placeholder upgrade (subtle shimmer) -- */
+    .card-placeholder {
+      position: relative;
+      overflow: hidden;
+    }
+    .card-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(164,196,36,0.04) 50%, transparent 60%);
+      transform: translateX(-100%);
+      transition: transform 0.6s var(--ease-spring);
+    }
+    .who-card:hover .card-placeholder::after { transform: translateX(100%); }
+
+    /* -- Spec card premium upgrade -- */
+    .spec-card {
+      transition: border-color 0.3s var(--ease-spring), transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring) !important;
+      cursor: default;
+    }
+    .spec-card:hover {
+      border-color: rgba(164,196,36,0.35) !important;
+      transform: translateY(-4px) !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3), 0 0 32px rgba(164,196,36,0.05) !important;
+    }
+    /* Spec value glow on card hover */
+    .spec-card:hover .spec-value {
+      text-shadow: 0 0 24px rgba(164,196,36,0.4);
+    }
+    .spec-value { transition: text-shadow 0.3s; }
+
+    /* -- FAQ upgrade -- */
+    .faq-btn {
+      transition: color 0.2s, background 0.2s !important;
+      border-radius: 4px;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      margin-left: -0.5rem;
+      margin-right: -0.5rem;
+    }
+    .faq-btn:hover {
+      background: rgba(164,196,36,0.04);
+    }
+    .faq-plus { transition: border-color 0.25s, color 0.25s, transform 0.35s var(--ease-spring) !important; }
+
+    /* -- Form input glow -- */
+    .f-group input:focus,
+    .f-group select:focus,
+    .f-group textarea:focus {
+      box-shadow: 0 0 0 3px rgba(164,196,36,0.12), 0 0 16px rgba(164,196,36,0.06) !important;
+    }
+
+    /* -- Submit button glow -- */
+    .btn-submit {
+      transition: background 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.25s var(--ease-spring) !important;
+      cursor: pointer;
+    }
+    .btn-submit:hover {
+      background: var(--lime-dark) !important;
+      transform: translateY(-2px) scale(1.01) !important;
+      box-shadow: var(--glow-lime), 0 8px 24px rgba(0,0,0,0.3) !important;
+    }
+    .btn-submit:active {
+      transform: scale(0.97) !important;
+      box-shadow: none !important;
+      transition-duration: 0.08s !important;
+    }
+
+    /* -- Footer social btn upgrade -- */
+    .social-btn {
+      transition: border-color 0.2s var(--ease-spring), color 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-spring) !important;
+      cursor: pointer;
+    }
+    .social-btn:hover {
+      border-color: var(--lime) !important;
+      color: var(--lime) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 0 14px rgba(164,196,36,0.2) !important;
+    }
+
+    /* -- Factor chips upgrade -- */
+    .chip {
+      transition: border-color 0.2s var(--ease-spring), color 0.2s, transform 0.15s var(--ease-spring) !important;
+      cursor: default;
+    }
+    .chip:hover {
+      border-color: rgba(164,196,36,0.5) !important;
+      color: var(--lime) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* -- Reveal animation upgrade with spring + stagger -- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring) !important;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.12s !important; }
+    .reveal-d2 { transition-delay: 0.24s !important; }
+    .reveal-d3 { transition-delay: 0.36s !important; }
+
+    /* -- Trust ticker upgrade — bolder, tighter -- */
+    .trust-item {
+      font-size: 0.8rem !important;
+      font-weight: 900 !important;
+      gap: 0.6rem !important;
+    }
+
+    /* -- Hero sub text upgrade -- */
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem) !important;
+      letter-spacing: 0.01em;
+    }
+
+    /* -- Prefers-reduced-motion: kill all motion -- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="PickleDrop" />
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#who">Who It's For</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-pill">Now Accepting Launch Inquiries &nbsp;·&nbsp; Austin, TX</div>
+    <h1 class="hero-headline">
+      Your Event. Our Court.<br><span class="accent">Perfect Match.</span>
+    </h1>
+    <p class="hero-sub">
+      Austin's portable pickleball experience. Delivered, set up, and torn down so you don't lift a finger.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Get a Quote</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator">
+    <span>Scroll</span>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</section>
+
+<!-- ===================== TRUST BAR ===================== -->
+<div class="trust-bar">
+  <div class="trust-track">
+    <div class="trust-item">🏓 #1 Fastest-Growing Sport in America</div><div class="trust-sep"></div>
+    <div class="trust-item">📐 Full-Size 20×44 Regulation Court</div><div class="trust-sep"></div>
+    <div class="trust-item">⚡ Setup in 1–3 Hours</div><div class="trust-sep"></div>
+    <div class="trust-item">📍 Serving Austin, TX</div><div class="trust-sep"></div>
+    <div class="trust-item">🚀 Launching 2026</div><div class="trust-sep"></div>
+    <div class="trust-item">🤝 Founding-Client Opportunities Available</div><div class="trust-sep"></div>
+    <!-- Duplicate set for seamless loop -->
+    <div class="trust-item">🏓 #1 Fastest-Growing Sport in America</div><div class="trust-sep"></div>
+    <div class="trust-item">📐 Full-Size 20×44 Regulation Court</div><div class="trust-sep"></div>
+    <div class="trust-item">⚡ Setup in 1–3 Hours</div><div class="trust-sep"></div>
+    <div class="trust-item">📍 Serving Austin, TX</div><div class="trust-sep"></div>
+    <div class="trust-item">🚀 Launching 2026</div><div class="trust-sep"></div>
+    <div class="trust-item">🤝 Founding-Client Opportunities Available</div><div class="trust-sep"></div>
+  </div>
+</div>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section id="how">
+  <div class="section-eyebrow">The Process</div>
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-body">Three steps. Zero hassle. One unforgettable event.</p>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-bg-num">01</div>
+      <div class="step-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 12h6M9 16h4"/>
+        </svg>
+      </div>
+      <h3>You Book</h3>
+      <p>Tell us about your event, venue, and group. We confirm your space qualifies and send a custom quote. No surprises, no commitment until you're ready.</p>
+    </div>
+    <div class="step-card reveal reveal-d1">
+      <div class="step-bg-num">02</div>
+      <div class="step-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13" rx="1"/>
+          <path d="M16 8h4l3 3v5h-7V8z"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
+      <h3>We Show Up</h3>
+      <p>On event day, we deliver and set up a full-size regulation court at your venue. We handle all on-site logistics. You do absolutely nothing.</p>
+    </div>
+    <div class="step-card reveal reveal-d2">
+      <div class="step-bg-num">03</div>
+      <div class="step-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 12l3 3 5-6"/>
+        </svg>
+      </div>
+      <h3>You Play</h3>
+      <p>Your guests enjoy a professional pickleball experience. When it's over, we pack up and disappear. You take all the credit. That's the whole point.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHO IT'S FOR ===================== -->
+<section id="who">
+  <div class="section-eyebrow">The Right Fit</div>
+  <h2 class="section-title">Who It's For</h2>
+  <p class="section-body">PickleDrop is built for venues and organizations that want to deliver an exceptional experience without doing any of the work.</p>
+
+  <div class="who-grid">
+    <!-- BREWERY -->
+    <div class="who-card card-brewery reveal">
+      <div class="who-card-visual">
+        <!--
+          SWAP IN HIGGSFIELD IMAGE:
+          Replace the <div class="card-placeholder"> block with:
+          <img src="brewery.jpg" alt="Pickleball at a brewery" />
+        -->
+        <div class="card-placeholder">
+          <div class="card-icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 2h8l1 6H7L8 2z"/>
+              <path d="M7 8v10a2 2 0 002 2h6a2 2 0 002-2V8"/>
+              <path d="M19 10h1a2 2 0 012 2v2a2 2 0 01-2 2h-1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="who-card-body">
+        <div class="who-card-tag">Breweries &amp; Taprooms</div>
+        <div class="who-card-title">Draw a Crowd. Keep Them Longer.</div>
+        <div class="who-card-hook">Turn a slow Tuesday into the night everyone's talking about.</div>
+        <p class="who-card-desc">We set up a full-size court on your paved patio, your guests pick up paddles, and your taps stay busy. A pickleball night is more shareable than trivia and a lot more Instagrammable than a food truck.</p>
+      </div>
+    </div>
+
+    <!-- APARTMENT -->
+    <div class="who-card card-apartment reveal reveal-d1">
+      <div class="who-card-visual">
+        <!--
+          SWAP IN HIGGSFIELD IMAGE:
+          Replace the <div class="card-placeholder"> block with:
+          <img src="apartment.jpg" alt="Apartment community pickleball event" />
+        -->
+        <div class="card-placeholder">
+          <div class="card-icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="who-card-body">
+        <div class="who-card-tag">Apartment Communities</div>
+        <div class="who-card-title">Hit Resident Goals. Lift No Fingers.</div>
+        <div class="who-card-hook">We bring the court, run the event, tear it down. You log the win.</div>
+        <p class="who-card-desc">Resident event expectations are high and property manager bandwidth is low. PickleDrop delivers a turnkey amenity activation residents actually show up for. No Taco Tuesday required.</p>
+      </div>
+    </div>
+
+    <!-- CORPORATE -->
+    <div class="who-card card-corporate reveal">
+      <div class="who-card-visual">
+        <!--
+          SWAP IN HIGGSFIELD IMAGE:
+          Replace the <div class="card-placeholder"> block with:
+          <img src="corporate.jpg" alt="Corporate team building pickleball" />
+        -->
+        <div class="card-placeholder">
+          <div class="card-icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="who-card-body">
+        <div class="who-card-tag">Corporate Teams</div>
+        <div class="who-card-title">Make the Office Worth Showing Up For.</div>
+        <div class="who-card-hook">Active, inclusive, comes to you. No bus, no offsite logistics.</div>
+        <p class="who-card-desc">Team days land flat when it's just catered lunch again. Pickleball is learnable in 5 minutes, works for all skill levels, and generates the kind of energy that actually builds teams.</p>
+      </div>
+    </div>
+
+    <!-- PRIVATE / EVENT PLANNERS -->
+    <div class="who-card card-private reveal reveal-d1">
+      <div class="who-card-visual">
+        <!--
+          SWAP IN HIGGSFIELD IMAGE:
+          Replace the <div class="card-placeholder"> block with:
+          <img src="private.jpg" alt="Private event pickleball party" />
+        -->
+        <div class="card-placeholder">
+          <div class="card-icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="who-card-body">
+        <div class="who-card-tag">Event Planners &amp; Private Parties</div>
+        <div class="who-card-title">A Turnkey Activity They Haven't Seen.</div>
+        <div class="who-card-hook">Birthdays, HOA events, reunions, weddings. We handle everything.</div>
+        <p class="who-card-desc">Give your event a centerpiece activity that gets everyone off their phones. PickleDrop is the "wait, what is happening over there?" moment every great event needs. Your clients will be asking for it again.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== REQUIREMENTS ===================== -->
+<section id="requirements">
+  <div class="section-eyebrow">Venue Requirements</div>
+  <h2 class="section-title">Court &amp; Venue Specs</h2>
+  <p class="section-body">We bring a regulation-size court. Here's exactly what your space needs to make it happen.</p>
+
+  <div class="spec-grid">
+    <div class="spec-card reveal">
+      <div class="spec-label">Court Size</div>
+      <div class="spec-value">20 × 44 ft</div>
+      <div class="spec-desc">Official regulation playing surface</div>
+    </div>
+    <div class="spec-card reveal reveal-d1">
+      <div class="spec-label">Total Space Needed</div>
+      <div class="spec-value">~24 × 54 ft</div>
+      <div class="spec-desc">Court plus safety run-off buffer, clear and level</div>
+    </div>
+    <div class="spec-card reveal reveal-d2">
+      <div class="spec-label">Surface Type</div>
+      <div class="spec-value">Paved Only</div>
+      <div class="spec-desc">Flat, level concrete or asphalt. No grass, gravel, or turf</div>
+    </div>
+    <div class="spec-card reveal">
+      <div class="spec-label">Setup Time</div>
+      <div class="spec-value">1–3 Hours</div>
+      <div class="spec-desc">We arrive early so your event starts on time</div>
+    </div>
+    <div class="spec-card reveal reveal-d1">
+      <div class="spec-label">Teardown Time</div>
+      <div class="spec-value">1–2 Hours</div>
+      <div class="spec-desc">We pack everything up when your event wraps</div>
+    </div>
+    <div class="spec-card reveal reveal-d2">
+      <div class="spec-label">Service Area</div>
+      <div class="spec-value">Austin, TX</div>
+      <div class="spec-desc">Austin and surrounding areas. Reach out to discuss your location</div>
+    </div>
+  </div>
+
+  <div class="spec-notice reveal">
+    <strong style="color: var(--lime);">Not sure if your space qualifies?</strong>
+    Send us a photo and a rough estimate of your paved area and we'll confirm in minutes with no commitment required.
+    <a href="#contact">Send a Photo →</a>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section id="pricing">
+  <div class="section-eyebrow">Pricing</div>
+  <h2 class="section-title">Built Around Your Event</h2>
+  <p class="section-body">
+    Every event is different. Duration, guest count, location, and add-ons all factor in. We build a custom quote so you only pay for what your event actually needs.
+  </p>
+
+  <div class="factor-chips">
+    <span class="chip">Event Duration</span>
+    <span class="chip">Guest Count</span>
+    <span class="chip">Location &amp; Site Access</span>
+    <span class="chip">Day-of Staffing</span>
+    <span class="chip">Recurring Booking Discount</span>
+    <span class="chip">Add-on Enhancements</span>
+  </div>
+
+  <a href="#contact" class="btn-primary">Get Your Custom Quote</a>
+</section>
+
+<!-- ===================== CONTACT FORM ===================== -->
+<section id="contact">
+  <div class="section-eyebrow">Get in Touch</div>
+  <h2 class="section-title">Let's Talk About Your Event</h2>
+
+  <div class="contact-layout">
+    <div class="contact-info">
+      <p class="section-body">Tell us about your event and we'll get back to you quickly, usually within 1 business day.</p>
+      <div class="contact-perks">
+        <div class="perk">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Quick response, usually within 1 business day
+        </div>
+        <div class="perk">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Custom quote for your specific event
+        </div>
+        <div class="perk">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          We'll confirm your venue qualifies first
+        </div>
+        <div class="perk">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          No commitment required to inquire
+        </div>
+      </div>
+    </div>
+
+    <div class="form-wrap">
+      <div class="form-success-msg" id="successMsg">
+        <h3>You're In!</h3>
+        <p>Thanks for reaching out. We'll review your inquiry and get back to you within 1–2 business days with a custom quote tailored to your event.</p>
+      </div>
+
+      <!--
+        FORMSPREE SETUP:
+        1. Go to https://formspree.io and create a free account
+        2. Create a new form and copy your Form ID (looks like: xyzabcde)
+        3. Replace FORM_ID below with your actual Form ID
+      -->
+      <form id="inquiry" action="https://formspree.io/f/mrevvlld" method="POST">
+        <div class="f-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required placeholder="Jane Smith" />
+        </div>
+        <div class="f-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="jane@company.com" />
+        </div>
+        <div class="f-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="(512) 555-0123" />
+        </div>
+        <div class="f-group f-full">
+          <label for="event_type">Event Type</label>
+          <select id="event_type" name="event_type">
+            <option value="" disabled selected>Select event type...</option>
+            <option>Corporate Event</option>
+            <option>Brewery Activation</option>
+            <option>Apartment Community Event</option>
+            <option>Private Party</option>
+            <option>Wedding</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="f-group">
+          <label for="date">Preferred Event Date</label>
+          <input type="date" id="date" name="event_date" />
+        </div>
+        <div class="f-group f-full">
+          <label for="venue">Venue Address or Neighborhood</label>
+          <input type="text" id="venue" name="venue_address" placeholder="East Austin, 78702" />
+        </div>
+        <div class="f-group f-full">
+          <label for="space">Describe Your Venue's Outdoor Space</label>
+          <textarea id="space" name="venue_space" placeholder="e.g. Covered concrete patio, approx 30×60 ft, on the east side of the building..."></textarea>
+        </div>
+        <div class="f-group f-full f-submit">
+          <button type="submit" class="btn-submit">Send My Inquiry →</button>
+          <p class="f-note">We set up a full-size 20×44 official court and need about 24×54 ft of flat paved space. We'll review your location before confirming availability. By submitting you agree to be contacted about your inquiry.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq">
+  <div class="section-eyebrow">Questions</div>
+  <h2 class="section-title">FAQ</h2>
+
+  <div class="faq-layout">
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        How much space do we need?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">We set up a full-size 20×44 regulation court and need roughly 24×54 feet of clear, level concrete or asphalt (that's the court plus a small safety buffer). Not sure? Send us a photo of the space and we'll confirm quickly, no commitment required.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        What surfaces work?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">Concrete and asphalt only. Grass, gravel, turf, and uneven surfaces do not work for a portable regulation court. Covered paved areas like parking structures or pavilions are great options.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        How long does setup take?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">Setup takes 1–3 hours; teardown takes 1–2 hours. We arrive early so your event starts exactly on time. You don't need to coordinate any of it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        What if it rains?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">We work with you to reschedule. Covered paved areas like a covered parking structure or pavilion work perfectly and give you weather protection built in.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        Do guests need to know how to play?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">Not at all. Pickleball is learnable in about 5 minutes. We set up the court and your guests figure out the rest quickly. That's half the fun. It works for all ages and all skill levels.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        How much does it cost?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">Pricing is custom-quoted based on your specific event. Duration, guest count, location, and add-ons all factor in. Fill out the inquiry form and we'll get back to you quickly with a quote built around your event.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        Do you serve areas outside Austin?
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-body">We're launching in Austin first. Reach out and let us know your location and we're happy to discuss what's possible for surrounding areas.</div>
+    </div>
+  </div>
+  <div class="faq-logo-col">
+    <div class="faq-logo-wrap">
+      <img src="logo.png" alt="" class="faq-logo-img" />
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.png" alt="PickleDrop" />
+      <p class="footer-tagline">We Drop Courts. You Drop In.</p>
+      <div class="social-row">
+        <a href="https://instagram.com/pickledropco" target="_blank" rel="noopener noreferrer" class="social-btn" title="Instagram @pickledropco">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4.5"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="https://tiktok.com/@pickledropco" target="_blank" rel="noopener noreferrer" class="social-btn" title="TikTok @pickledropco">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#who">Who It's For</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Get a Quote</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:pickledropco@gmail.com">pickledropco@gmail.com</a></li>
+        <li><a href="https://instagram.com/pickledropco" target="_blank" rel="noopener noreferrer">@pickledropco on Instagram</a></li>
+        <li><a href="https://tiktok.com/@pickledropco" target="_blank" rel="noopener noreferrer">@pickledropco on TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 PickleDrop. All rights reserved.</p>
+    <p class="footer-city">📍 Austin, Texas</p>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+  /* ---------- Mobile nav ---------- */
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  /* ---------- FAQ accordion ---------- */
+  function toggleFaq(btn) {
+    var item = btn.closest('.faq-item');
+    var isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item.active').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    if (!isActive) item.classList.add('active');
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  /* ---------- Form submission (Formspree AJAX) ---------- */
+  var form = document.getElementById('inquiry');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(res) {
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('successMsg').classList.add('visible');
+      } else {
+        btn.textContent = 'Send My Inquiry →';
+        btn.disabled = false;
+        alert('Something went wrong. Please email us directly at pickledropco@gmail.com');
+      }
+    })
+    .catch(function() {
+      btn.textContent = 'Send My Inquiry →';
+      btn.disabled = false;
+      alert('Something went wrong. Please email us directly at pickledropco@gmail.com');
+    });
+  });
+</script>
+
+</body>
+</html>
